@@ -1,3 +1,6 @@
+# TODO:
+# - confs, cleanups
+
 %define		mod_name	bandwidth
 %define 	apxs		/usr/sbin/apxs
 %define		_ver	0.6
@@ -44,7 +47,8 @@ na katalogu, wielko¶ci plików oraz zdalnym IP/domenie.
 perl -pi -e 's@include "apr@include "apr/apr@g' bw_mod-%{_ver}.c
 perl -pi -e 's@^.*apr_buckets.h.*$@@'  bw_mod-%{_ver}.c
 #%{apxs} -c mod_%{mod_name}-%{version}.c -o mod_%{mod_name}.so
-%{apxs} -c bw_mod-%{_ver}.c -o mod_%{mod_name}.so
+%{apxs} -c bw_mod-%{_ver}.c
+mv .libs/bw_mod-0.6.so mod_bandwidth.so
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -73,8 +77,9 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc *html
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mod_*.conf
+%doc bw_mod-0.6.txt
+#TODO
+#%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mod_*.conf
 %config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/cron.d/%{name}
 %attr(755,root,root) %{_sbindir}/*
 %attr(755,root,root) %{_pkglibdir}/*
