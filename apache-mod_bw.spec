@@ -1,14 +1,12 @@
 # TODO:
 # - cron?
-# - rename to apache-mod_bw (it is not the same as apache1-mod_bandwidth)
-
-%define		mod_name	bandwidth
+%define		mod_name	bw
 %define 	apxs		/usr/sbin/apxs
 Summary:	Apache module: bandwidth limits
 Summary(pl):	Modu³ do Apache: limity pasma
 Name:		apache-mod_%{mod_name}
 Version:	0.6
-Release:	0.3
+Release:	1
 License:	Apache
 Group:		Networking/Daemons
 Source0:	http://www.ivn.cl/apache/bw_mod-%{version}.tgz
@@ -47,7 +45,7 @@ na katalogu, wielko¶ci plików oraz zdalnym IP/domenie.
 perl -pi -e 's@include "apr@include "apr/apr@g' bw_mod-%{version}.c
 perl -pi -e 's@^.*apr_buckets.h.*$@@'  bw_mod-%{version}.c
 %{apxs} -c bw_mod-%{version}.c
-mv .libs/bw_mod-%{version}.so mod_bandwidth.so
+mv .libs/bw_mod-%{version}.so mod_bw.so
 
 %install
 rm -rf $RPM_BUILD_ROOT
