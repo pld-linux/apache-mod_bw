@@ -1,17 +1,17 @@
 # TODO:
 # - cron?
+# - rename to apache-mod_bw (it is not the same as apache1-mod_bandwidth)
 
 %define		mod_name	bandwidth
 %define 	apxs		/usr/sbin/apxs
-%define		_ver	0.6
 Summary:	Apache module: bandwidth limits
 Summary(pl):	Modu³ do Apache: limity pasma
 Name:		apache-mod_%{mod_name}
 Version:	0.6
-Release:	0.1
+Release:	0.2
 License:	Apache
 Group:		Networking/Daemons
-Source0:	http://www.ivn.cl/apache/bw_mod-%{_ver}.tgz
+Source0:	http://www.ivn.cl/apache/bw_mod-%{version}.tgz
 # Source0-md5:	0c92fa6344f487321291a592dbb49856
 Source1:	%{name}.conf
 URL:		http://www.ivn.cl/apache/
@@ -39,13 +39,13 @@ Modu³ pozwalaj±cy na ograniczanie pasma poprzez serwer Apache bazuj±c
 na katalogu, wielko¶ci plików oraz zdalnym IP/domenie.
 
 %prep
-%setup -q -n bw_mod-0.6
+%setup -q -n bw_mod-%{version}
 
 %build
-perl -pi -e 's@include "apr@include "apr/apr@g' bw_mod-%{_ver}.c
-perl -pi -e 's@^.*apr_buckets.h.*$@@'  bw_mod-%{_ver}.c
-%{apxs} -c bw_mod-%{_ver}.c
-mv .libs/bw_mod-0.6.so mod_bandwidth.so
+perl -pi -e 's@include "apr@include "apr/apr@g' bw_mod-%{version}.c
+perl -pi -e 's@^.*apr_buckets.h.*$@@'  bw_mod-%{version}.c
+%{apxs} -c bw_mod-%{version}.c
+mv .libs/bw_mod-%{version}.so mod_bandwidth.so
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -74,7 +74,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc bw_mod-0.6.txt
+%doc bw_mod-%{version}.txt LICENSE
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/httpd.conf/*mod_*.conf
 #%config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/cron.d/%{name}
 #%attr(755,root,root) %{_sbindir}/*
