@@ -1,17 +1,17 @@
 %define		mod_name	bandwidth
 %define 	apxs		/usr/sbin/apxs
-%define		_ver	0.5rc1
+%define		_ver	0.6
 Summary:	Apache module: bandwidth limits
 Summary(pl):	Modu³ do Apache: limity pasma
 Name:		apache-mod_%{mod_name}
-Version:	0.5
+Version:	0.6
 Release:	0.1
 License:	Apache
 Group:		Networking/Daemons
 Source0:	http://www.ivn.cl/apache/bw_mod-%{_ver}.tgz
-# Source0-md5:	df9e2da2175b3a5f09cbbe384f32de0a
+# Source0-md5:	0c92fa6344f487321291a592dbb49856
 #Source0:	http://www.ivn.cl/apache/mod_%{mod_name}-%{_version}.tgz
-Source1:	%{name}.conf
+#Source1:	%{name}.conf
 URL:		http://www.ivn.cl/apache/
 BuildRequires:	apache-devel >= 2.0.0
 BuildRequires:	%{apxs}
@@ -38,7 +38,7 @@ na katalogu, wielko¶ci plików oraz zdalnym IP/domenie.
 
 %prep
 #%setup -q -n mod_%{mod_name}-%{version}
-%setup -q -n bw_mod-0.5
+%setup -q -n bw_mod-0.6
 
 %build
 perl -pi -e 's@include "apr@include "apr/apr@g' bw_mod-%{_ver}.c
@@ -53,7 +53,7 @@ install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}} \
 	$RPM_BUILD_ROOT{/etc/cron.d,%{_sbindir}}
 
 install mod_%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mod_%{mod_name}.conf
+#install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mod_%{mod_name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
