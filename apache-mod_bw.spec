@@ -34,8 +34,8 @@ setting of server-wide or per connection bandwidth limits, based on
 the directory, size of files and remote IP/domain.
 
 %description -l pl
-Modu³ pozwalaj±cy na ograniczanie pasma poprzez serwer Apache bazuj±c
-na katalogu, wielko¶ci plików oraz zdalnym IP/domenie.
+Modu³ pozwalaj±cy na ograniczanie pasma serwera Apache bazuj±c na
+katalogu, wielko¶ci plików lub zdalnym IP/domenie.
 
 %prep
 %setup -q -n bw_mod-%{version}
@@ -43,7 +43,7 @@ na katalogu, wielko¶ci plików oraz zdalnym IP/domenie.
 
 %build
 perl -pi -e 's@include "apr@include "apr/apr@g' bw_mod-%{version}.c
-perl -pi -e 's@^.*apr_buckets.h.*$@@'  bw_mod-%{version}.c
+perl -pi -e 's@^.*apr_buckets.h.*$@@' bw_mod-%{version}.c
 %{apxs} -c bw_mod-%{version}.c
 mv .libs/bw_mod-%{version}.so mod_bw.so
 
