@@ -14,7 +14,7 @@ Group:		Networking/Daemons
 Source0:	http://www.ivn.cl/apache/bw_mod-%{_ver}.tgz
 # Source0-md5:	0c92fa6344f487321291a592dbb49856
 #Source0:	http://www.ivn.cl/apache/mod_%{mod_name}-%{_version}.tgz
-#Source1:	%{name}.conf
+Source1:	%{name}.conf
 URL:		http://www.ivn.cl/apache/
 BuildRequires:	apache-devel >= 2.0.0
 BuildRequires:	%{apxs}
@@ -54,10 +54,10 @@ mv .libs/bw_mod-0.6.so mod_bandwidth.so
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}} \
 	$RPM_BUILD_ROOT%{_var}/run/%{name}/{link,master} \
-	$RPM_BUILD_ROOT{/etc/cron.d,%{_sbindir}}
+	$RPM_BUILD_ROOT{/etc/cron.d,%{_sbindir},%{_sysconfdir}/httpd.conf}
 
 install mod_%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}
-#install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mod_%{mod_name}.conf
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/97_mod_%{mod_name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -78,10 +78,9 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc bw_mod-0.6.txt
-#TODO
-#%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/mod_*.conf
-%config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/cron.d/%{name}
-%attr(755,root,root) %{_sbindir}/*
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/httpd.conf/*mod_*.conf
+#%config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/cron.d/%{name}
+#%attr(755,root,root) %{_sbindir}/*
 %attr(755,root,root) %{_pkglibdir}/*
 %attr(750,http,root) %dir %{_var}/run/%{name}
 %attr(750,http,root) %dir %{_var}/run/%{name}/link
