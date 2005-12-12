@@ -14,8 +14,8 @@ Source0:	http://www.ivn.cl/apache/bw_mod-%{version}.tgz
 Source1:	%{name}.conf
 Patch0:		%{name}-apr_1.0.patch
 URL:		http://www.ivn.cl/apache/
-BuildRequires:	apache-devel >= 2.0.0
 BuildRequires:	%{apxs}
+BuildRequires:	apache-devel >= 2.0.0
 Requires(post,preun):	%{apxs}
 Requires(post,preun):	grep
 Requires(preun):	fileutils
@@ -75,7 +75,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc bw_mod-%{version}.txt LICENSE
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/httpd.conf/*mod_*.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf/*mod_*.conf
 #%config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/cron.d/%{name}
 #%attr(755,root,root) %{_sbindir}/*
 %attr(755,root,root) %{_pkglibdir}/*
