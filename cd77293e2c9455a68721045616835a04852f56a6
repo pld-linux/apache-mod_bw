@@ -1,0 +1,4 @@
+- dropped %{_ver} macro, use %{version} where possible
+- added LICENSE file
+- added TODO entry (think about renaming this spec)
+- release 0.2
