@@ -6,7 +6,7 @@ Summary:	Apache module: bandwidth limits
 Summary(pl):	Modu³ do Apache: limity pasma
 Name:		apache-mod_%{mod_name}
 Version:	0.6
-Release:	1
+Release:	2
 License:	Apache
 Group:		Networking/Daemons
 Source0:	http://www.ivn.cl/apache/bw_mod-%{version}.tgz
@@ -16,17 +16,15 @@ Patch0:		%{name}-apr_1.0.patch
 URL:		http://www.ivn.cl/apache/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.0.0
-Requires(post,preun):	%{apxs}
-Requires(post,preun):	grep
-Requires(preun):	fileutils
+BuildRequires:	sed >= 4.0
+Requires:	apache(modules-api) = %apache_modules_api
 Requires:	apache >= 2.0.0
 Requires:	crondaemon
 Requires:	procps
-Obsoletes:	apache-mod_%{mod_name} <= %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_pkglibdir	%(%{apxs} -q LIBEXECDIR)
-%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR)
+%define		_pkglibdir	%(%{apxs} -q LIBEXECDIR 2>/dev/null)
+%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR 2>/dev/null)
 
 %description
 "Mod_bandwidth" is a module for the Apache webserver that enable the
@@ -42,8 +40,8 @@ katalogu, wielko¶ci plików lub zdalnym IP/domenie.
 %patch0 -p1
 
 %build
-perl -pi -e 's@include "apr@include "apr/apr@g' bw_mod-%{version}.c
-perl -pi -e 's@^.*apr_buckets.h.*$@@' bw_mod-%{version}.c
+sed -i -e 's@include "apr@include "apr/apr@g' bw_mod-%{version}.c
+sed -i -e 's@^.*apr_buckets.h.*$@@' bw_mod-%{version}.c
 %{apxs} -c bw_mod-%{version}.c
 mv .libs/bw_mod-%{version}.so mod_bw.so
 
@@ -60,15 +58,14 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/97_mod_%{mod_name}.c
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ -f /var/lock/subsys/apache ]; then
-	/etc/rc.d/init.d/apache restart 1>&2
+if [ -f /var/lock/subsys/httpd ]; then
+	/etc/rc.d/init.d/httpd restart 1>&2
 fi
 
 %preun
 if [ "$1" = "0" ]; then
-	umask 027
-	if [ -f /var/lock/subsys/apache ]; then
-		/etc/rc.d/init.d/apache restart 1>&2
+	if [ -f /var/lock/subsys/httpd ]; then
+		/etc/rc.d/init.d/httpd restart 1>&2
 	fi
 fi
 
