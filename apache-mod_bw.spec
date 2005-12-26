@@ -18,7 +18,6 @@ BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.0.0
 BuildRequires:	sed >= 4.0
 Requires:	apache(modules-api) = %apache_modules_api
-Requires:	apache >= 2.0.0
 Requires:	crondaemon
 Requires:	procps
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -38,20 +37,19 @@ katalogu, wielko¶ci plików lub zdalnym IP/domenie.
 %prep
 %setup -q -n bw_mod-%{version}
 %patch0 -p1
-
-%build
 sed -i -e 's@include "apr@include "apr/apr@g' bw_mod-%{version}.c
 sed -i -e 's@^.*apr_buckets.h.*$@@' bw_mod-%{version}.c
+
+%build
 %{apxs} -c bw_mod-%{version}.c
-mv .libs/bw_mod-%{version}.so mod_bw.so
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}} \
+install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd.conf} \
 	$RPM_BUILD_ROOT%{_var}/run/%{name}/{link,master} \
-	$RPM_BUILD_ROOT{/etc/cron.d,%{_sbindir},%{_sysconfdir}/httpd.conf}
+	$RPM_BUILD_ROOT{/etc/cron.d,%{_sbindir}}
 
-install mod_%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}
+install .libs/bw_mod-%{version}.so $RPM_BUILD_ROOT%{_pkglibdir}/mod_%{mod_name}.so
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/97_mod_%{mod_name}.conf
 
 %clean
@@ -72,7 +70,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc bw_mod-%{version}.txt LICENSE
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf/*mod_*.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf/*_mod_%{mod_name}.conf
 #%config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/cron.d/%{name}
 #%attr(755,root,root) %{_sbindir}/*
 %attr(755,root,root) %{_pkglibdir}/*
