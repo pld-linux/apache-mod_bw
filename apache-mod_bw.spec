@@ -71,9 +71,9 @@ fi
 %defattr(644,root,root,755)
 %doc bw_mod-%{version}.txt LICENSE
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf/*_mod_%{mod_name}.conf
+%attr(755,root,root) %{_pkglibdir}/*.so
 #%config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/cron.d/%{name}
 #%attr(755,root,root) %{_sbindir}/*
-%attr(755,root,root) %{_pkglibdir}/*
 %attr(750,http,root) %dir %{_var}/run/%{name}
 %attr(750,http,root) %dir %{_var}/run/%{name}/link
 %attr(750,http,root) %dir %{_var}/run/%{name}/master
