@@ -6,7 +6,7 @@ Summary:	Apache module: bandwidth limits
 Summary(pl):	Modu³ do Apache: limity pasma
 Name:		apache-mod_%{mod_name}
 Version:	0.6
-Release:	2
+Release:	3
 License:	Apache
 Group:		Networking/Daemons
 Source0:	http://www.ivn.cl/apache/bw_mod-%{version}.tgz
