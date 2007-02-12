@@ -3,7 +3,7 @@
 %define		mod_name	bw
 %define 	apxs		/usr/sbin/apxs
 Summary:	Apache module: bandwidth limits
-Summary(pl.UTF-8):   Moduł do Apache: limity pasma
+Summary(pl.UTF-8):	Moduł do Apache: limity pasma
 Name:		apache-mod_%{mod_name}
 Version:	0.6
 Release:	3
