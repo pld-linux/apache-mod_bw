@@ -14,7 +14,7 @@ Source0:	http://www.ivn.cl/apache/bw_mod-%{version}.tgz
 Source1:	%{name}.conf
 Patch0:		%{name}-apr_1.0.patch
 URL:		http://www.ivn.cl/apache/
-BuildRequires:	%{apxs}
+BuildRequires:	apache-apxs >= 2.0
 BuildRequires:	apache-devel >= 2.0.0
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	sed >= 4.0
