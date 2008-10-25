@@ -8,7 +8,7 @@ Name:		apache-mod_%{mod_name}
 Version:	0.6
 Release:	3
 License:	Apache
-Group:		Networking/Daemons
+Group:		Networking/Daemons/HTTP
 Source0:	http://www.ivn.cl/apache/bw_mod-%{version}.tgz
 # Source0-md5:	0c92fa6344f487321291a592dbb49856
 Source1:	%{name}.conf
