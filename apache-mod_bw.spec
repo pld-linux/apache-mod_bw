@@ -5,14 +5,13 @@
 Summary:	Apache module: bandwidth limits
 Summary(pl.UTF-8):	Moduł do Apache: limity pasma
 Name:		apache-mod_%{mod_name}
-Version:	0.6
-Release:	3
+Version:	0.92
+Release:	1
 License:	Apache
 Group:		Networking/Daemons/HTTP
-Source0:	http://www.ivn.cl/apache/bw_mod-%{version}.tgz
-# Source0-md5:	0c92fa6344f487321291a592dbb49856
+Source0:	http://ivn.cl/files/source/mod_bw-%{version}.tgz
+# Source0-md5:	90f5e632dad5de8d49dcdb61453dcf97
 Source1:	%{name}.conf
-Patch0:		%{name}-apr_1.0.patch
 URL:		http://www.ivn.cl/apache/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.0.0
@@ -36,13 +35,10 @@ Moduł pozwalający na ograniczanie pasma serwera Apache bazując na
 katalogu, wielkości plików lub zdalnym IP/domenie.
 
 %prep
-%setup -q -n bw_mod-%{version}
-%patch0 -p1
-sed -i -e 's@include "apr@include "apr/apr@g' bw_mod-%{version}.c
-sed -i -e 's@^.*apr_buckets.h.*$@@' bw_mod-%{version}.c
+%setup -qc
 
 %build
-%{apxs} -c bw_mod-%{version}.c
+%{apxs} -c mod_bw.c
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -50,8 +46,8 @@ install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd.conf} \
 	$RPM_BUILD_ROOT%{_var}/run/%{name}/{link,master} \
 	$RPM_BUILD_ROOT{/etc/cron.d,%{_sbindir}}
 
-install .libs/bw_mod-%{version}.so $RPM_BUILD_ROOT%{_pkglibdir}/mod_%{mod_name}.so
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/97_mod_%{mod_name}.conf
+install -p .libs/mod_bw.so $RPM_BUILD_ROOT%{_pkglibdir}/mod_%{mod_name}.so
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/97_mod_%{mod_name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -66,7 +62,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc bw_mod-%{version}.txt LICENSE
+%doc mod_bw.txt LICENSE ChangeLog
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf/*_mod_%{mod_name}.conf
 %attr(755,root,root) %{_pkglibdir}/*.so
 #%config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/cron.d/%{name}
