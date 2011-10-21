@@ -6,7 +6,7 @@ Summary:	Apache module: bandwidth limits
 Summary(pl.UTF-8):	Moduł do Apache: limity pasma
 Name:		apache-mod_%{mod_name}
 Version:	0.92
-Release:	1
+Release:	2
 License:	Apache v2.0
 Group:		Networking/Daemons/HTTP
 Source0:	http://ivn.cl/files/source/mod_bw-%{version}.tgz
@@ -23,7 +23,7 @@ Requires:	procps
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_pkglibdir	%(%{apxs} -q LIBEXECDIR 2>/dev/null)
-%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR 2>/dev/null)
+%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR 2>/dev/null)/conf.d
 
 %description
 "Mod_bandwidth" is a module for the Apache webserver that enable the
@@ -42,12 +42,12 @@ katalogu, wielkości plików lub zdalnym IP/domenie.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd.conf} \
+install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}} \
 	$RPM_BUILD_ROOT%{_var}/run/%{name}/{link,master} \
 	$RPM_BUILD_ROOT{/etc/cron.d,%{_sbindir}}
 
 install -p .libs/mod_bw.so $RPM_BUILD_ROOT%{_pkglibdir}/mod_%{mod_name}.so
-cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/97_mod_%{mod_name}.conf
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/97_mod_%{mod_name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -63,7 +63,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc mod_bw.txt LICENSE ChangeLog
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf/*_mod_%{mod_name}.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*_mod_%{mod_name}.conf
 %attr(755,root,root) %{_pkglibdir}/*.so
 #%config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/cron.d/%{name}
 #%attr(755,root,root) %{_sbindir}/*
