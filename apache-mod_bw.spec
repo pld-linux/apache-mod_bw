@@ -6,12 +6,13 @@ Summary:	Apache module: bandwidth limits
 Summary(pl.UTF-8):	Moduł do Apache: limity pasma
 Name:		apache-mod_%{mod_name}
 Version:	0.92
-Release:	2
+Release:	3
 License:	Apache v2.0
 Group:		Networking/Daemons/HTTP
 Source0:	http://ivn.cl/files/source/mod_bw-%{version}.tgz
 # Source0-md5:	90f5e632dad5de8d49dcdb61453dcf97
 Source1:	%{name}.conf
+Source2:	%{name}.tmpfiles
 URL:		http://www.ivn.cl/apache/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.0.0
@@ -44,10 +45,12 @@ katalogu, wielkości plików lub zdalnym IP/domenie.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}} \
 	$RPM_BUILD_ROOT%{_var}/run/%{name}/{link,master} \
-	$RPM_BUILD_ROOT{/etc/cron.d,%{_sbindir}}
+	$RPM_BUILD_ROOT{/etc/cron.d,%{_sbindir}} \
+	$RPM_BUILD_ROOT/usr/lib/tmpfiles.d
 
 install -p .libs/mod_bw.so $RPM_BUILD_ROOT%{_pkglibdir}/mod_%{mod_name}.so
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/97_mod_%{mod_name}.conf
+install %{SOURCE2} $RPM_BUILD_ROOT/usr/lib/tmpfiles.d/%{name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -67,6 +70,7 @@ fi
 %attr(755,root,root) %{_pkglibdir}/*.so
 #%config(noreplace) %verify(not size mtime md5) %attr(640,root,root) /etc/cron.d/%{name}
 #%attr(755,root,root) %{_sbindir}/*
+/usr/lib/tmpfiles.d/%{name}.conf
 %attr(750,http,root) %dir %{_var}/run/%{name}
 %attr(750,http,root) %dir %{_var}/run/%{name}/link
 %attr(750,http,root) %dir %{_var}/run/%{name}/master
