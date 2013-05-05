@@ -6,13 +6,14 @@ Summary:	Apache module: bandwidth limits
 Summary(pl.UTF-8):	Moduł do Apache: limity pasma
 Name:		apache-mod_%{mod_name}
 Version:	0.92
-Release:	4
+Release:	5
 License:	Apache v2.0
 Group:		Networking/Daemons/HTTP
 Source0:	http://ivn.cl/files/source/mod_bw-%{version}.tgz
 # Source0-md5:	90f5e632dad5de8d49dcdb61453dcf97
 Source1:	%{name}.conf
 Source2:	%{name}.tmpfiles
+Patch0:		mod_bw-apache24.patch
 URL:		http://www.ivn.cl/apache/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.0.0
@@ -37,6 +38,7 @@ katalogu, wielkości plików lub zdalnym IP/domenie.
 
 %prep
 %setup -qc
+%patch0 -p1
 
 %build
 %{apxs} -c mod_bw.c
